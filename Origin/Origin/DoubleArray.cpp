@@ -197,30 +197,21 @@ void DoubleArray::FindTest(){
 
 
 
-void DoubleArray::DumpTestRecursion(const int &_current ,const int &_next) {
+void DoubleArray::DumpTestRecursion(const int &_current ) {
 
-	int current = _current;
-	int next = _next;
+	// 文末確認
+	if (BASE[_current] == -1) {
+		count++;
+		return;
+	}
 
-
+	// 全文字検索
 	for (auto code : CODE) {
 
-		if (BASE[next] == -1) {
-			count++;
-			return;
-		}
-
-
+		// 次の文字の場所確認　あるなら再帰，その場所をカレントにする
 		int next = BASE[_current] + CODE[code.first];
-
-		if (CHECK[next] == _current ) {
-			//int __current = current;
-			current = next;
-			DumpTestRecursion( current, next);
-			//current = __current;
-		}
-		
-		
+		if (CHECK[next] == _current ) DumpTestRecursion( next );
+		if (CHECK[next] < 0) cout << "c : " << _current << endl;
 	}
 
 }
@@ -228,7 +219,7 @@ void DoubleArray::DumpTestRecursion(const int &_current ,const int &_next) {
 void DoubleArray::DumpTest() {
 	
 
-	DumpTestRecursion(0,0);
+	DumpTestRecursion(0);
 
 	cout << "*************************************************" <<endl;
 	cout << "	result : " << FILENAME << endl;

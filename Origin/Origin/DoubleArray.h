@@ -34,7 +34,7 @@ private:
 	// “à•”ŠÖ”
 	void CodeSet();		// ƒR[ƒh‚ÌŠi”[
 	void MemoryAllocation(size_t size);
-	void DumpTestRecursion(const int &current,const int &next);
+	void DumpTestRecursion(const int &current);
 
 	int count = 0;
 
