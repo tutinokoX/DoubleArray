@@ -157,6 +157,9 @@
     <ClInclude Include="DoubleArray.h" />
     <ClInclude Include="KeySort.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="sample.keyset" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

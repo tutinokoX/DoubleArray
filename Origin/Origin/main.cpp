@@ -1,24 +1,16 @@
 
 
 #include "DoubleArray.h"
-#include "KeySort.h"
 
 using namespace std;
 
 int main() {
 
-	vector <string> str_group;
+	DoubleArray da;
 
-	str_group.push_back("ag");
-	str_group.push_back("age");
-	str_group.push_back("bad");
-	str_group.push_back("badge");
-	str_group.push_back("bot");
+	da.KeygroupSet("KEYSET/wordnet-3.0-word-100000");
+	da.StaticInsert();
 
-
-	KeySort test(str_group);
-
-	test.DataCheck();
-
+	da.FindTest();
 }
 

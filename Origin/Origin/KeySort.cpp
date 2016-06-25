@@ -7,7 +7,7 @@
 
 
 現在のプログラムでは文末文字を印として代入しているが，代入処理でも多少の時間を
-使うので，並び替え途中で代入できる方法を考える．
+使ってしまう．並び替え途中で代入できる方法を考える．
 */
 
 #include "KeySort.h"
@@ -18,8 +18,8 @@ using namespace std;
 // コンストラクタ
 KeySort::KeySort(const vector <string> &str_group, const string &endpoint)
 {
+	_endpoint = endpoint;
 	vector <string> _str_group = str_group;
-	for (string& str : _str_group) str += endpoint;
 	_str_group.push_back("\n");
 	recursion_sort(_str_group);
 }
@@ -101,4 +101,40 @@ void KeySort::DataCheck() {
 		}
 
 	}
+}
+
+// ----------------------------------------------------------------------------
+// 名前	： sort_str_group
+// 機能	： ダブル配列挿入のための前処理　＝　文字列群を並び替える
+// 引数	： (out)	vector < vector <string> >	$convert_str_group	: 変換後の文字列群
+// 出力	： なし
+//
+// 備考	： 
+//		   
+//		　 
+// ----------------------------------------------------------------------------
+vector <vector<string>> KeySort::Output() {
+
+	vector <vector<string>> convert_str_group;
+
+	vector <string> buf;
+
+	for (auto hie : CONTAINER) {
+		if (hie.empty()) continue;
+		for (auto str : hie) {
+			string one;
+			while (1) {
+
+				if (str.empty()) break;
+				one = str.front();
+				str.erase(0, 1);
+				buf.push_back(one);
+				one.clear();
+
+			}
+			convert_str_group.push_back(buf);
+			buf.clear();
+		}
+	}
+	return convert_str_group;
 }

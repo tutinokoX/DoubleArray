@@ -1,10 +1,21 @@
-#include <vector>
+
+#include "KeySort.h"
+#include <map>
+#include <fstream>
+#include <algorithm>
+
+struct CELL_org
+{
+	struct CELL *next;
+	struct CELL *prev;
+};
 
 struct CELL
 {
-	int *next;
-	int *prev;
+	int next;
+	int prev;
 };
+
 
 class DoubleArray
 {
@@ -13,22 +24,26 @@ private:
 	std::vector <int> BASE;
 	std::vector <int> CHECK;
 
-	std::vector <CELL> LIST;	// 双方向リスト
+	std::vector <CELL> LIST;			// 双方向リスト
 
 	std::vector <std::string> KEYGROUP;	// キー集合の格納変数
-	std::vector <std::string> CODE;		// 文字コードの格納
+	std::map <std::string, int> CODE;				// 文字コードの格納
 
+	std::string FILENAME;
 
+	// 内部関数
+	void CodeSet();		// コードの格納
+	void MemoryAllocation(size_t size);
 
 public:
 	DoubleArray();
 	~DoubleArray();
 
-	bool data_set(const std::string &filename);
+	bool KeygroupSet(const std::string &filename = "KEYSET/sample.keyset");
 
-	void static_insert();
-	bool find(const std::string &str);
-	void find_test();
-	void dump_test();
+	void StaticInsert();
+	bool Find(const std::string &str);
+	void FindTest();
+	void DumpTest();
 };
 
