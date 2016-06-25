@@ -126,6 +126,7 @@ void DoubleArray::StaticInsert() {
 			}
 			if (ok_c == str.size()) break;
 			search_location = LIST[search_location].next;
+			if (search_location == 0) search_location = LIST.size();
 			ok_c = 0;
 			buf_task.clear();
 		}
@@ -150,7 +151,7 @@ void DoubleArray::StaticInsert() {
 
 		next_task.erase(next_task.begin());
 		current = next_task.front();
-		if (LIST.size() - 1 > LIST[0].prev) MemoryAllocation(LIST.size() + 10);
+		// if (LIST.size() - 1 > LIST[0].prev) MemoryAllocation(LIST.size() + 10);
 
 	}
 	CHECK[0] = -1;
