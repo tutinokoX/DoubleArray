@@ -12,5 +12,8 @@ int main() {
 	da.StaticInsert();
 
 	da.FindTest();
+	da.DumpTest();
+
+	//da.~DoubleArray();
 }
 

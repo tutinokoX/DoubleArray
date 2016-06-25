@@ -34,6 +34,9 @@ private:
 	// “à•”ŠÖ”
 	void CodeSet();		// ƒR[ƒh‚ÌŠi”[
 	void MemoryAllocation(size_t size);
+	void DumpTestRecursion(const int &current,const int &next);
+
+	int count = 0;
 
 public:
 	DoubleArray();
@@ -44,6 +47,7 @@ public:
 	void StaticInsert();
 	bool Find(const std::string &str);
 	void FindTest();
+
 	void DumpTest();
 };
 

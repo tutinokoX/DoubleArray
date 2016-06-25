@@ -152,6 +152,7 @@ void DoubleArray::StaticInsert() {
 		if (LIST.size() - 1 > LIST[0].prev) MemoryAllocation(LIST.size() + 10);
 
 	}
+	CHECK[0] = -1;
 }
 
 
@@ -187,17 +188,52 @@ void DoubleArray::FindTest(){
 		if (Find(str)) count++;
 	}
 
+
+	cout << "*************************************************" << endl;
 	cout << "	result : " << FILENAME << endl;
 	cout << "	" << count << "/" << KEYGROUP.size() << endl;
 	cout << "	" << ((double)count * (double)(100.0 / KEYGROUP.size())) << " [%]" << endl;
 }
 
+
+
+void DoubleArray::DumpTestRecursion(const int &_current ,const int &_next) {
+
+	int current = _current;
+	int next = _next;
+
+
+	for (auto code : CODE) {
+
+		if (BASE[next] == -1) {
+			count++;
+			return;
+		}
+
+
+		int next = BASE[_current] + CODE[code.first];
+
+		if (CHECK[next] == _current ) {
+			//int __current = current;
+			current = next;
+			DumpTestRecursion( current, next);
+			//current = __current;
+		}
+		
+		
+	}
+
+}
+
 void DoubleArray::DumpTest() {
 	
-	for (auto code : CODE) {
-		string text += 
-		if( Find( code.first ))
-	}
+
+	DumpTestRecursion(0,0);
+
+	cout << "*************************************************" <<endl;
+	cout << "	result : " << FILENAME << endl;
+	cout << "	" << count << "/" << KEYGROUP.size() << endl;
+	cout << "	" << ((double)count * (double)(100.0 / KEYGROUP.size())) << " [%]" << endl;
 }
 
 
