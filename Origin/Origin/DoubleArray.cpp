@@ -57,9 +57,10 @@ void DoubleArray::MemoryAllocation(size_t size) {
 	LIST[LIST.size() - 1].next = 0;
 }
 
-bool DoubleArray::KeygroupSet(const string &filename) {
+bool DoubleArray::KeygroupSet(const string &filename , const string &endpoint) {
 
 	FILENAME = filename;
+	ENDPOINT = endpoint;
 	KEYGROUP.clear();
 
 	ifstream ifs(filename);
@@ -98,8 +99,8 @@ void DoubleArray::StaticInsert() {
 	vector <int> next_task;
 	next_task.push_back(current);
 
-	for (string& str : KEYGROUP) str += "#";
-	KeySort ks(KEYGROUP);
+	for (string& str : KEYGROUP) str += ENDPOINT;
+	KeySort ks(KEYGROUP , ENDPOINT);
 	for (auto str : ks.Output()) {
 
 		int next = 0;
@@ -190,9 +191,11 @@ void DoubleArray::FindTest(){
 
 
 	cout << "*************************************************" << endl;
-	cout << "	result : " << FILENAME << endl;
-	cout << "	" << count << "/" << KEYGROUP.size() << endl;
-	cout << "	" << ((double)count * (double)(100.0 / KEYGROUP.size())) << " [%]" << endl;
+	cout << "[ 検索テスト ]" << endl;
+	cout << "	file   :  " << FILENAME << endl;
+	cout << "	result :  " << ((double)count * (double)(100.0 / KEYGROUP.size())) << " [%]  ( "
+		<< count << "/" << KEYGROUP.size() << " )" << endl;
+	cout << endl;
 }
 
 
@@ -211,20 +214,20 @@ void DoubleArray::DumpTestRecursion(const int &_current ) {
 		// 次の文字の場所確認　あるなら再帰，その場所をカレントにする
 		int next = BASE[_current] + CODE[code.first];
 		if (CHECK[next] == _current ) DumpTestRecursion( next );
-		if (CHECK[next] < 0) cout << "c : " << _current << endl;
 	}
 
 }
 
 void DoubleArray::DumpTest() {
 	
-
 	DumpTestRecursion(0);
 
 	cout << "*************************************************" <<endl;
-	cout << "	result : " << FILENAME << endl;
-	cout << "	" << count << "/" << KEYGROUP.size() << endl;
-	cout << "	" << ((double)count * (double)(100.0 / KEYGROUP.size())) << " [%]" << endl;
+	cout << "[ ダンプテスト ]" << endl;
+	cout << "	file   :  " << FILENAME << endl;
+	cout << "	result :  " << ((double)count * (double)(100.0 / KEYGROUP.size())) << " [%]  ( " 
+		<< count << "/" << KEYGROUP.size() << " )" << endl;
+	cout << endl;
 }
 
 

@@ -109,14 +109,11 @@ void KeySort::DataCheck() {
 // 引数	： (out)	vector < vector <string> >	$convert_str_group	: 変換後の文字列群
 // 出力	： なし
 //
-// 備考	： 
-//		   
-//		　 
+// 備考	： 	　 
 // ----------------------------------------------------------------------------
 vector <vector<string>> KeySort::Output() {
 
 	vector <vector<string>> convert_str_group;
-
 	vector <string> buf;
 
 	for (auto hie : CONTAINER) {
