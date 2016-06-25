@@ -3,6 +3,7 @@
 #include <map>
 #include <fstream>
 #include <algorithm>
+#include <functional>
 
 struct CELL_org
 {
@@ -26,9 +27,9 @@ private:
 	// --- ---------------- --- //
 
 	std::vector <CELL> LIST;						// 双方向リスト
+	std::map <std::string, int> CODE;				// 文字コードの格納
 
 	std::vector <std::string> KEYGROUP;				// キー集合の格納変数
-	std::map <std::string, int> CODE;				// 文字コードの格納
 
 	std::string FILENAME;
 	std::string ENDPOINT;
@@ -38,10 +39,13 @@ private:
 	void CodeSet();									// コードの格納
 	void MemoryAllocation(size_t size);				// メモリ格納
 	void DumpTestRecursion(const int &current);		// ダンプテスト時の再帰関数
+	void CodeSortSet();
 
+	bool Comparison(std::string lhs, std::string rhs);
 	int count = 0;
 
 public:
+
 	DoubleArray();
 	~DoubleArray();
 

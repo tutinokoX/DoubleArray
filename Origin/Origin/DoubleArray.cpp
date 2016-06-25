@@ -32,6 +32,57 @@ void DoubleArray::CodeSet() {
 
 }
 
+void DoubleArray::CodeSortSet() {
+
+	multimap<string ,int>  CODE_sort;
+	multimap<int, string> CODE_buf;
+	//vector <int> CODE_sort;
+
+	for (auto key : KEYGROUP) {
+
+		for(int i= 0 ; i < key.length() ; i++){
+			
+			string one = key.substr(i, 1);
+			auto itr = CODE_sort.find(one);
+			if (itr != CODE_sort.end()) {
+
+				itr->second++;
+			}
+			else {
+				CODE_sort.insert(pair<string , int>(one , 1));
+			}
+			//CODE_sort[one] ++;
+		}
+	}
+
+	for (auto code : CODE_sort) {
+
+		CODE_buf.insert(pair<int , string>(code.second, code.first));
+	}
+
+
+	for (auto c : CODE_buf) {
+
+		cout << c.first << " , " << c.second << endl;
+	}
+
+	int c_count = 1;
+
+	for (auto code : CODE_buf) {
+
+		CODE.insert( pair<string, int>(code.second,  CODE_buf.size()+1 - c_count));
+		c_count++;
+	}
+	CODE.insert(pair<string, int >(ENDPOINT, 0));
+
+	
+	for (auto cod : CODE) {
+
+		cout << cod.first << " , " << cod.second << endl;
+	}
+
+}
+
 void DoubleArray::MemoryAllocation(size_t size) {
 
 	CELL buf;
@@ -57,6 +108,61 @@ void DoubleArray::MemoryAllocation(size_t size) {
 	LIST[LIST.size() - 1].next = 0;
 }
 
+
+
+// é©çÏî‰ärä÷êî
+bool DoubleArray::Comparison(std::string lhs, std::string rhs) {
+
+	string a, b;
+	string buf_a, buf_b;
+	a = lhs.front();
+	b = rhs.front();
+
+
+	while (1) {
+		buf_a = a.front();
+		buf_b = b.front();
+		
+		
+		if (CODE[buf_a] != CODE[buf_b]) {
+		return (CODE[buf_a] < CODE[buf_b]) ? true : false;
+		}
+		
+		
+		a.erase(0, 1);
+		if (a.empty()) return true;
+		b.erase(0, 1);
+		if (b.empty()) return false;
+	}
+}
+
+/*
+// é©çÏî‰ärä÷êî
+bool Comp(std::string lhs, std::string rhs) {
+
+	string a, b;
+	string buf_a, buf_b;
+	a = lhs.front();
+	b = rhs.front();
+
+	while (1) {
+		buf_a = a.front();
+		buf_b = b.front();
+
+		
+		if (&CODE[buf_a] != &CODE[buf_b]) {
+		return (&CODE[buf_a] < &CODE[buf_b]) ? true : false;
+		}
+		
+
+		a.erase(0, 1);
+		if (a.empty()) return true;
+		b.erase(0, 1);
+		if (b.empty()) return false;
+	}
+}
+*/
+
 bool DoubleArray::KeygroupSet(const string &filename , const string &endpoint) {
 
 	FILENAME = filename;
@@ -75,20 +181,40 @@ bool DoubleArray::KeygroupSet(const string &filename , const string &endpoint) {
 		KEYGROUP.push_back(str);
 	}
 
+	// ÉRÅ[ÉhÇÃäiî[
+	// CodeSet();
+	CodeSortSet();
+
 	// ñºëOèáÇ…ÇµÇƒèdï°Çè¡ãé
 	sort(KEYGROUP.begin(), KEYGROUP.end());
 	KEYGROUP.erase(unique(KEYGROUP.begin(), KEYGROUP.end()), KEYGROUP.end());
 
+
+	for (int i = 0; i < KEYGROUP.size(); i++) {
+
+		for (int j = KEYGROUP.size() - 1; j > i; j--) {
+
+			if (!Comparison(KEYGROUP[j - 1], KEYGROUP[j])) {
+				string buf = KEYGROUP[j];
+				KEYGROUP[j] = KEYGROUP[j - 1];
+				KEYGROUP[j - 1] = buf;
+			}
+		}
+	}
+
+	//sort(KEYGROUP.begin(), KEYGROUP.end() , Comparison );
+
 	// èââÒÉÅÉÇÉäämï€
 	MemoryAllocation(KEYGROUP.size());
 
-	// ÉRÅ[ÉhÇÃäiî[
-	CodeSet();
+
 
 
 	
 	return true;
 }
+
+
 
 void DoubleArray::StaticInsert() {
 
