@@ -34,15 +34,21 @@ void DoubleArray::CodeSet() {
 
 void DoubleArray::CodeSortSet() {
 
+	CODE.clear();
+
 	multimap<string ,int>  CODE_sort;
 	multimap<int, string> CODE_buf;
 	//vector <int> CODE_sort;
 
 	for (auto key : KEYGROUP) {
 
-		for(int i= 0 ; i < key.length() ; i++){
-			
-			string one = key.substr(i, 1);
+		// for(int i= 0 ; i < key.length() ; i++){
+		string one;
+		while(1){
+			if (key.empty()) break;
+			char _one = key.front();
+			// string one = (key.substr(i, 1).c_str()) & 0xff;
+			one = _one & 0xff;
 			auto itr = CODE_sort.find(one);
 			if (itr != CODE_sort.end()) {
 
@@ -51,6 +57,8 @@ void DoubleArray::CodeSortSet() {
 			else {
 				CODE_sort.insert(pair<string , int>(one , 1));
 			}
+			key.erase(0, 1);
+			one.clear();
 			//CODE_sort[one] ++;
 		}
 	}
@@ -80,6 +88,19 @@ void DoubleArray::CodeSortSet() {
 
 		cout << cod.first << " , " << cod.second << endl;
 	}
+
+	for (int i = 0; i < 256; i++) {
+
+		string str;
+		str = (unsigned char)i;
+		auto itr = CODE.find(str);
+		if (itr == CODE.end()) {
+			CODE.insert(pair<string, int>(str, c_count));
+			c_count++;
+		}
+
+	}
+
 
 }
 
@@ -190,6 +211,7 @@ bool DoubleArray::KeygroupSet(const string &filename , const string &endpoint) {
 	KEYGROUP.erase(unique(KEYGROUP.begin(), KEYGROUP.end()), KEYGROUP.end());
 
 
+	// コードのソート
 	for (int i = 0; i < KEYGROUP.size(); i++) {
 
 		for (int j = KEYGROUP.size() - 1; j > i; j--) {
@@ -202,15 +224,16 @@ bool DoubleArray::KeygroupSet(const string &filename , const string &endpoint) {
 		}
 	}
 
+	cout << "KYEGROUP" << endl;
+	for (auto key : KEYGROUP) {
+		cout << key << endl;
+	}
+
 	//sort(KEYGROUP.begin(), KEYGROUP.end() , Comparison );
 
 	// 初回メモリ確保
-	MemoryAllocation(KEYGROUP.size());
+	MemoryAllocation(( KEYGROUP.size() > CODE.size() ) ? KEYGROUP.size() : CODE.size() );
 
-
-
-
-	
 	return true;
 }
 
@@ -227,7 +250,7 @@ void DoubleArray::StaticInsert() {
 
 	for (string& str : KEYGROUP) str += ENDPOINT;
 	KeySort ks(KEYGROUP , ENDPOINT);
-	for (auto str : ks.Output()) {
+	for (vector<string> str : ks.Output()) {
 
 		int next = 0;
 		int base = 0;
@@ -235,6 +258,7 @@ void DoubleArray::StaticInsert() {
 		vector <int> buf_task;
 		buf_task.clear();
 		search_location = first_check;
+		int max_next = 0;
 
 		// CHECKの状態から格納できる場所を探す
 		while (1) {
@@ -242,10 +266,11 @@ void DoubleArray::StaticInsert() {
 			base = search_location - CODE[str.front()];
 			if (base < 0) base = 0;
 
-			for (auto one : str) {
+			for (vector<string>::iterator one = str.begin(); one != str.end(); one++) {
 
-				next = base + CODE[one];
-				buf_task.push_back(next);
+				next = base + CODE[*one];
+				buf_task.push_back(next); 
+				if (buf_task[max_next] < next) max_next = distance(str.begin(), one);
 
 				if (CHECK.size() > (size_t)next) if (CHECK[next] >= 0) break;
 				ok_c++;
@@ -254,11 +279,13 @@ void DoubleArray::StaticInsert() {
 			search_location = LIST[search_location].next;
 			if (search_location == 0) search_location = LIST.size();
 			ok_c = 0;
+			max_next = 0;
 			buf_task.clear();
 		}
 
+		
 		// メモリ管理
-		if (next >= CHECK.size()) MemoryAllocation(next + 100);
+		if (buf_task[max_next] >= CHECK.size()) MemoryAllocation(buf_task[max_next] + 100);
 
 
 		// ダブル配列に格納
@@ -307,12 +334,37 @@ bool DoubleArray::Find(const string &str) {
 	return true;
 }
 
+bool DoubleArray::SaveArray(const string &filename) {
+
+	ofstream ofs_base , ofs_check , ofs_code;
+	ofs_base.open("./OUTPUT/" + filename+"_BASE.txt");
+	ofs_check.open("./OUTPUT/"+ filename + "_CHECK.txt");
+	ofs_code.open("./OUTPUT/" + filename + "_CODE.txt");
+
+	if (ofs_base.fail() || ofs_check.fail() , ofs_code.fail()) {
+
+		cerr << "err : input file -> " << filename << endl;
+		return false;
+	}
+
+	for (auto base : BASE) {
+		ofs_base << base << endl;
+	}
+	for (auto check : CHECK) {
+		ofs_check << check << endl;
+	}
+	for (auto code : CODE) {
+		ofs_code << code.second << " : " << code.first << endl;
+	}
+
+	return true;
+}
 
 void DoubleArray::FindTest(){
 
 	size_t count = 0;
 	for (auto str : KEYGROUP) {
-		// cout << str << " : " << (Find(str) ? "ok" : "no") << endl;;
+		cout << str << " : " << (Find(str) ? "ok" : "no") << endl;;
 		if (Find(str)) count++;
 	}
 

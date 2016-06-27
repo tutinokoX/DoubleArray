@@ -53,8 +53,10 @@ public:
 
 	void StaticInsert();
 	bool Find(const std::string &str);
-	void FindTest();
 
+	bool SaveArray(const std::string &filename);
+
+	void FindTest();
 	void DumpTest();
 };
 
