@@ -15,8 +15,10 @@ int main(int argc , char *argv[]) {
 
 	string filename;
 	if(argc == 2) filename = argv[1];
-	else filename = "KEYSET/test.num";
-
+	// else filename = "KEYSET/test.num";
+	// else filename = "KEYSET/keyset.num";
+	// else filename = "KEYSET/ipadic-2.7.0-titles-100000";
+	else filename = "KEYSET/wordnet-3.0-word-100000";
 
 	da.KeygroupSet(filename);
 	da.StaticInsert();

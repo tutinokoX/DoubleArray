@@ -1,5 +1,6 @@
 
 #include "KeySort.h"
+#include <vector>
 #include <map>
 #include <fstream>
 #include <algorithm>
@@ -40,6 +41,9 @@ private:
 	void MemoryAllocation(size_t size);				// メモリ格納
 	void DumpTestRecursion(const int &current);		// ダンプテスト時の再帰関数
 	void CodeSortSet();
+
+	int partition(std::vector <std::string> &keygroup, int left, int right);
+	void quick_sort(std::vector <std::string> &keygroup  , int left , int right);
 
 	bool Comparison(std::string lhs, std::string rhs);
 	int count = 0;

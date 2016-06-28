@@ -136,8 +136,8 @@ bool DoubleArray::Comparison(std::string lhs, std::string rhs) {
 
 	string a, b;
 	string buf_a, buf_b;
-	a = lhs.front();
-	b = rhs.front();
+	a = lhs;
+	b = rhs;
 
 
 	while (1) {
@@ -184,6 +184,46 @@ bool Comp(std::string lhs, std::string rhs) {
 }
 */
 
+int DoubleArray::partition(vector <string> &keygroup , int left , int right) {
+
+	int i, j;
+	string t;
+
+
+	string pivot = keygroup[right];
+
+	i = left - 1;
+	j = right;
+
+	while (1) {
+
+		t.clear();
+
+		while (!Comparison( pivot , keygroup[++i]));
+
+		while ((i < --j) && Comparison(pivot , keygroup[j]));
+
+		if (i >= j) break;
+		
+		t = keygroup[i]; keygroup[i] = keygroup[j]; keygroup[j] = t;
+	}
+	t = keygroup[i]; keygroup[i] = keygroup[right]; keygroup[right] = t;
+	
+	return i;	
+}
+
+void DoubleArray::quick_sort(vector <string> &keygroup, int left, int right) {
+
+	if (left >= right) return;
+
+	int v = partition(keygroup, left, right);
+
+	quick_sort(keygroup, left, v - 1);
+
+	quick_sort(keygroup, v + 1, right);
+
+}
+
 bool DoubleArray::KeygroupSet(const string &filename , const string &endpoint) {
 
 	FILENAME = filename;
@@ -210,24 +250,33 @@ bool DoubleArray::KeygroupSet(const string &filename , const string &endpoint) {
 	sort(KEYGROUP.begin(), KEYGROUP.end());
 	KEYGROUP.erase(unique(KEYGROUP.begin(), KEYGROUP.end()), KEYGROUP.end());
 
+	vector <string> KEYGROUP_sub;
+	KEYGROUP_sub = KEYGROUP;
 
+	/*
 	// コードのソート
-	for (int i = 0; i < KEYGROUP.size(); i++) {
+	for (int i = 0; i < KEYGROUP_sub.size(); i++) {
 
-		for (int j = KEYGROUP.size() - 1; j > i; j--) {
+		for (int j = KEYGROUP_sub.size() - 1; j > i; j--) {
 
-			if (!Comparison(KEYGROUP[j - 1], KEYGROUP[j])) {
-				string buf = KEYGROUP[j];
-				KEYGROUP[j] = KEYGROUP[j - 1];
-				KEYGROUP[j - 1] = buf;
+			if (!Comparison(KEYGROUP_sub[j - 1], KEYGROUP_sub[j])) {
+				string buf = KEYGROUP_sub[j];
+				KEYGROUP_sub[j] = KEYGROUP_sub[j - 1];
+				KEYGROUP_sub[j - 1] = buf;
 			}
 		}
 	}
+	*/
 
+	// クイックソードを採用
+	quick_sort(KEYGROUP , 0, KEYGROUP.size() - 1);
+
+	/*
 	cout << "KYEGROUP" << endl;
-	for (auto key : KEYGROUP) {
-		cout << key << endl;
+	for (int i = 0; i < KEYGROUP.size(); i++) {
+		cout << " :  " << KEYGROUP[i] << "  :  " << KEYGROUP_sub[i] << "  : " << endl;
 	}
+	*/
 
 	//sort(KEYGROUP.begin(), KEYGROUP.end() , Comparison );
 
@@ -364,7 +413,7 @@ void DoubleArray::FindTest(){
 
 	size_t count = 0;
 	for (auto str : KEYGROUP) {
-		cout << str << " : " << (Find(str) ? "ok" : "no") << endl;;
+		// cout << str << " : " << (Find(str) ? "ok" : "no") << endl;;
 		if (Find(str)) count++;
 	}
 
