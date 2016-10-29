@@ -31,5 +31,6 @@ OBJS := \$(SRCS:.cpp=.o)
 
 clean: 
 	rm -f *.o
+	rm \$(TARGET)
 " > Makefile
 

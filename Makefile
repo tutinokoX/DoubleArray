@@ -15,4 +15,5 @@ $(TARGET): $(OBJS)
 
 clean: 
 	rm -f *.o
+	rm $(TARGET)
 
