@@ -20,24 +20,24 @@ struct CELL
 class DoubleArray
 {
 private:
-	// --- ƒ_ƒuƒ‹”z—ñ‚Ì–{‘Ì --- //
+	// --- ãƒ€ãƒ–ãƒ«é…åˆ—ã®æœ¬ä½“ --- //
 	std::vector <int> BASE;
 	std::vector <int> CHECK;
 	// --- ---------------- --- //
 
-	std::vector <CELL> LIST;						// ‘o•ûŒüƒŠƒXƒg
+	std::vector <CELL> LIST;						// åŒæ–¹å‘ãƒªã‚¹ãƒˆ
 
-	std::vector <std::string> KEYGROUP;				// ƒL[W‡‚ÌŠi”[•Ï”
-	std::map <std::string, int> CODE;				// •¶šƒR[ƒh‚ÌŠi”[
+	std::vector <std::string> KEYGROUP;				// ã‚­ãƒ¼é›†åˆã®æ ¼ç´å¤‰æ•°
+	std::map <std::string, int> CODE;				// æ–‡å­—ã‚³ãƒ¼ãƒ‰ã®æ ¼ç´
 
 	std::string FILENAME;
 	std::string ENDPOINT;
 
 
-	// --- “à•”ŠÖ” --- //
-	void CodeSet();									// ƒR[ƒh‚ÌŠi”[
-	void MemoryAllocation(size_t size);				// ƒƒ‚ƒŠŠi”[
-	void DumpTestRecursion(const int &current);		// ƒ_ƒ“ƒvƒeƒXƒg‚ÌÄ‹AŠÖ”
+	// --- å†…éƒ¨é–¢æ•° --- //
+	void CodeSet();									// ã‚³ãƒ¼ãƒ‰ã®æ ¼ç´
+	void MemoryAllocation(size_t size);				// ãƒ¡ãƒ¢ãƒªæ ¼ç´
+	void DumpTestRecursion(const int &current);		// ãƒ€ãƒ³ãƒ—ãƒ†ã‚¹ãƒˆæ™‚ã®å†å¸°é–¢æ•°
 
 	int count = 0;
 

@@ -1,13 +1,13 @@
 /*
 
-����̃v���O�����ł͍����D��T���ŕ��ёւ����s�������C
-���D��ł̕��ёւ����l�����̂ł�����̃v���O�������\�z��ڕW�Ƃ���D
+今回のプログラムでは高さ優先探索で並び替えを行ったが，
+幅優先での並び替えも考えらるのでそちらのプログラムも構築を目標とする．
 
-�X�s�[�h�������ق����̗p����\��
+スピードが速いほうを採用する予定
 
 
-���݂̃v���O�����ł͕�����������Ƃ��đ�����Ă��邪�C��������ł������̎��Ԃ�
-�g���Ă��܂��D���ёւ��r���ő���ł�����@���l����D
+現在のプログラムでは文末文字を印として代入しているが，代入処理でも多少の時間を
+使ってしまう．並び替え途中で代入できる方法を考える．
 */
 
 #include "KeySort.h"
@@ -15,7 +15,7 @@
 using namespace std;
 
 
-// �R���X�g���N�^
+// コンストラクタ
 KeySort::KeySort(const vector <string> &str_group, const string &endpoint)
 {
 	_endpoint = endpoint;
@@ -25,7 +25,7 @@ KeySort::KeySort(const vector <string> &str_group, const string &endpoint)
 }
 
 
-// �f�X�g���N�^
+// デストラクタ
 KeySort::~KeySort()
 {
 	vector<vector<string>>().swap(CONTAINER);
@@ -33,14 +33,14 @@ KeySort::~KeySort()
 
 
 // ----------------------------------------------------------------------------
-// ���O	�F recursion_sort
-// �@�\	�F ������Q����ёւ��̂��߂̍ċA�֐�
-// ����	�F (in)	const vector <string>	$str_group	: �i�[���镶����Q
-// �o��	�F �Ȃ�
+// 名前	： recursion_sort
+// 機能	： 文字列群を並び替えのための再帰関数
+// 引数	： (in)	const vector <string>	$str_group	: 格納する文字列群
+// 出力	： なし
 //
-// ���l	�F ���̊֐��͍ċA�ɂ���ĕ��������בւ���
-//		   ���בւ���������́C�N���X�ϐ��́uCONTAINER�v�Ɋi�[�����
-//		�@ �ċA�̐[���Əo���������Ԃ�2�����z���\��
+// 備考	： この関数は再帰によって文字列を並べ替える
+//		   並べ替えた文字列は，クラス変数の「CONTAINER」に格納される
+//		　 再帰の深さと出現した順番で2次元配列を表現
 // ----------------------------------------------------------------------------
 void KeySort::recursion_sort(const vector <string> &str_group) {
 
@@ -53,40 +53,40 @@ void KeySort::recursion_sort(const vector <string> &str_group) {
 
 		if (str.empty()) continue;
 
-		// ������̍ŏ��̕����݂̂��擾
+		// 文字列の最初の文字のみを取得
 		now = str.front();
 
-		// �擪�̕����񂪕ύX�����ꏊ�������͕���������ׂĊm�F������
+		// 先頭の文字列が変更した場所もしくは文字列をすべて確認したら
 		if ((buf != now && !buf.empty()) || now == "\n") {
 
-			buf_str += buf;		// �i�[������𑝂₷
-			hierarchy++;		// �K�w���グ��
+			buf_str += buf;		// 格納文字列を増やす
+			hierarchy++;		// 階層を上げる
 
-			// �������̊m��
+			// メモリの確保
 			if (max_hierarchy < hierarchy) {
 				CONTAINER.resize(hierarchy);
 				max_hierarchy = hierarchy;
 			}
 
-			// �V�����K�w�ֈړ��@�����񂪂Ȃ���΋�̂܂܈ړ�
+			// 新しい階層へ移動　文字列がなければ空のまま移動
 			if (!buf_str_group.empty()) buf_str_group.push_back("\n");
 			recursion_sort(buf_str_group);
 			buf_str_group.clear();
 		}
 
-		// �V�����K�w�̂��߂̕�������m�� �擪�������폜���Ċi�[
+		// 新しい階層のための文字列を確保 先頭文字を削除して格納
 		if (!str.substr(1).empty()) buf_str_group.push_back(str.substr(1));
 
 		buf = now;
 	}
 
-	// �����񂪊i�[����Ă��Ȃ���΁C�K�w���ЂƂ����Ė߂�
+	// 文字列が格納されていなければ，階層をひとつ下げて戻る
 	if (buf.empty()) {
 		hierarchy--;
 		return;
 	}
 
-	// �R���e�i�Ɋi�[
+	// コンテナに格納
 	CONTAINER[hierarchy].push_back(buf_str);
 	hierarchy--;
 	return;
@@ -104,12 +104,12 @@ void KeySort::DataCheck() {
 }
 
 // ----------------------------------------------------------------------------
-// ���O	�F sort_str_group
-// �@�\	�F �_�u���z��}���̂��߂̑O�����@���@������Q����ёւ���
-// ����	�F (out)	vector < vector <string> >	$convert_str_group	: �ϊ���̕�����Q
-// �o��	�F �Ȃ�
+// 名前	： sort_str_group
+// 機能	： ダブル配列挿入のための前処理　＝　文字列群を並び替える
+// 引数	： (out)	vector < vector <string> >	$convert_str_group	: 変換後の文字列群
+// 出力	： なし
 //
-// ���l	�F 	�@ 
+// 備考	： 	　 
 // ----------------------------------------------------------------------------
 vector <vector<string>> KeySort::Output() {
 
