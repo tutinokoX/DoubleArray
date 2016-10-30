@@ -75,14 +75,14 @@ bool DoubleArray::KeygroupSet(const string &filename , const string &endpoint) {
 		KEYGROUP.push_back(str);
 	}
 
-	// –¼‘O‡‚É‚µ‚Äd•¡‚ğÁ‹
+	// åå‰é †ã«ã—ã¦é‡è¤‡ã‚’æ¶ˆå»
 	sort(KEYGROUP.begin(), KEYGROUP.end());
 	KEYGROUP.erase(unique(KEYGROUP.begin(), KEYGROUP.end()), KEYGROUP.end());
 
-	// ‰‰ñƒƒ‚ƒŠŠm•Û
+	// åˆå›ãƒ¡ãƒ¢ãƒªç¢ºä¿
 	MemoryAllocation(KEYGROUP.size());
 
-	// ƒR[ƒh‚ÌŠi”[
+	// ã‚³ãƒ¼ãƒ‰ã®æ ¼ç´
 	CodeSet();
 
 
@@ -110,7 +110,7 @@ void DoubleArray::StaticInsert() {
 		buf_task.clear();
 		search_location = first_check;
 
-		// CHECK‚Ìó‘Ô‚©‚çŠi”[‚Å‚«‚éêŠ‚ğ’T‚·
+		// CHECKã®çŠ¶æ…‹ã‹ã‚‰æ ¼ç´ã§ãã‚‹å ´æ‰€ã‚’æ¢ã™
 		while (1) {
 
 			base = search_location - CODE[str.front()];
@@ -131,11 +131,11 @@ void DoubleArray::StaticInsert() {
 			buf_task.clear();
 		}
 
-		// ƒƒ‚ƒŠŠÇ—
+		// ãƒ¡ãƒ¢ãƒªç®¡ç†
 		if (next >= CHECK.size()) MemoryAllocation(next + 100);
 
 
-		// ƒ_ƒuƒ‹”z—ñ‚ÉŠi”[
+		// ãƒ€ãƒ–ãƒ«é…åˆ—ã«æ ¼ç´
 		BASE[current] = base;
 		for (vector <int>::iterator itr = buf_task.begin(); itr != buf_task.end(); itr++) {
 	
@@ -192,7 +192,7 @@ void DoubleArray::FindTest(){
 
 
 	cout << "*************************************************" << endl;
-	cout << "[ ŒŸõƒeƒXƒg ]" << endl;
+	cout << "[ æ¤œç´¢ãƒ†ã‚¹ãƒˆ ]" << endl;
 	cout << "	file   :  " << FILENAME << endl;
 	cout << "	result :  " << ((double)count * (double)(100.0 / KEYGROUP.size())) << " [%]  ( "
 		<< count << "/" << KEYGROUP.size() << " )" << endl;
@@ -203,16 +203,16 @@ void DoubleArray::FindTest(){
 
 void DoubleArray::DumpTestRecursion(const int &_current ) {
 
-	// •¶––Šm”F
+	// æ–‡æœ«ç¢ºèª
 	if (BASE[_current] == -1) {
 		count++;
 		return;
 	}
 
-	// ‘S•¶šŒŸõ
+	// å…¨æ–‡å­—æ¤œç´¢
 	for (auto code : CODE) {
 
-		// Ÿ‚Ì•¶š‚ÌêŠŠm”F@‚ ‚é‚È‚çÄ‹AC‚»‚ÌêŠ‚ğƒJƒŒƒ“ƒg‚É‚·‚é
+		// æ¬¡ã®æ–‡å­—ã®å ´æ‰€ç¢ºèªã€€ã‚ã‚‹ãªã‚‰å†å¸°ï¼Œãã®å ´æ‰€ã‚’ã‚«ãƒ¬ãƒ³ãƒˆã«ã™ã‚‹
 		int next = BASE[_current] + CODE[code.first];
 		if (CHECK[next] == _current ) DumpTestRecursion( next );
 	}
@@ -224,7 +224,7 @@ void DoubleArray::DumpTest() {
 	DumpTestRecursion(0);
 
 	cout << "*************************************************" <<endl;
-	cout << "[ ƒ_ƒ“ƒvƒeƒXƒg ]" << endl;
+	cout << "[ ãƒ€ãƒ³ãƒ—ãƒ†ã‚¹ãƒˆ ]" << endl;
 	cout << "	file   :  " << FILENAME << endl;
 	cout << "	result :  " << ((double)count * (double)(100.0 / KEYGROUP.size())) << " [%]  ( " 
 		<< count << "/" << KEYGROUP.size() << " )" << endl;
