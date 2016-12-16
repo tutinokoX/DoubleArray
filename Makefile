@@ -3,7 +3,7 @@ TARGET = da
 vpath %.h include
 vpath %.cpp src
 CPPFLAGS = -I include -O2
-CC = g++ -std=c++11 -std=c++14
+CC = g++ -std=c++11
 SRCS = DoubleArray.cpp KeySort.cpp main.cpp 
 OBJS := $(SRCS:.cpp=.o)
 
